@@ -12,36 +12,47 @@ public class Simulacion
     private ArrayList<Disco> discoNuevo;
     
     Scanner escaner;
-    int opcion=0;
+    int opcion;
 
-    public Simulacion() 
-    {
+    public static void main(String[] args) {
+        Simulacion simula = new Simulacion();
+    }
+    
+    public Simulacion() {
         this.escaner= new Scanner(System.in);
         this.discoNuevo= new ArrayList<>(1);
     }
     
-    public void MenuInicial()
-    {
+    public void MenuInicial() {
         
         System.out.println("Que desea hacer?");
-        System.out.println("1.- Iniciar simulación");
-        System.out.println("2.- Salir");
+        System.out.println("1.- Ejecutar Script");
+        System.out.println("2.- Realizar simulacion");
+        System.out.println("3.- Salir");
         System.out.println(">>> ");
-        opcion= escaner.nextInt();
+        opcion= Integer.parseInt(escaner.next());
         
-        switch(opcion)
-        {
-            case 1: menunormal();
-            
-            
-            case 2: break;
+        while (opcion < 0 && opcion > 2) {
+            System.out.println("Opcion incorrecta, que desea hacer");
+            System.out.println("1.- Ejecutar Script");
+            System.out.println("2.- Realizar simulacion");
+            System.out.println("3.- Salir");
+            System.out.println(">>> ");
+            opcion= Integer.parseInt(escaner.next());
+        }
+        
+        switch(opcion) {
+            case 1: script();
+            case 2: menunormal();
+            case 3: break;
         }
     }
-
-    private void menunormal() 
-    {
+    
+    public void script() {
         
-        opcion=0;
+    }
+
+    private void menunormal() {
         
         System.out.println("1.- Format");
         System.out.println("2.- Create");
@@ -51,35 +62,40 @@ public class Simulacion
         System.out.println("6.- WriteAt");
         System.out.println("7.- PrintFile");
         System.out.println("8.- List");
-        System.out.println("9.- Más Información");
-        System.out.println("10.- Volver");
+        System.out.println("9.- Help");
+        System.out.println("0.- Volver");
+        
         opcion= escaner.nextInt();
         
-        switch(opcion)
-        {
+        switch(opcion) {
             case 1: creacionDisco();
-            case 2: 
-            
+            case 2: creacionArchivo();
+            case 3: System.out.print("3");
+            case 4: System.out.print("4");
+            case 5: System.out.print("5");
+            case 6: System.out.print("6");
+            case 7: System.out.print("7");
+            case 8: System.out.print("8");
+            case 9: System.out.print("9");
+            case 0: MenuInicial();
         }
     }
 
     private void creacionDisco() 
     {
         
-        if(discoNuevo.size()==0)
-        {
+        if(discoNuevo.size()==0) {
             System.out.println("No hay disco existente para fomatear");
             System.out.println(" ");
             
         }
         
-        if(discoNuevo.size()==1)
-        {
+        if(discoNuevo.size()==1) {
             System.out.println("Formateando disco");
         }
         
         System.out.println("Indique el numero de sectores que tendrá el disco: ");
-        opcion= escaner.nextInt();
+        int sectores = escaner.nextInt();
         
         
         
