@@ -17,11 +17,12 @@ public class Directorio
     {
         this.nombresArchivos= new ArrayList<>();
         this.sectoresOcupados= new ArrayList<>();
-        this.largoDirectorio= 0;
+        //this.largoDirectorio= 0;
     }
     
-    public void rellenadoArrayList()
+    public void rellenadoArrayList(int largoDir)
     {
+        this.largoDirectorio= largoDir;
         for(int i=0; i<largoDirectorio-1; i++)
         {
             if(i==0 || i==1)
@@ -37,6 +38,7 @@ public class Directorio
             
             }
         }
+        System.out.println("Sectores ocupados (desde directorio): " + sectoresOcupados.size());
     }
     
     public void borrandoArray()
@@ -82,14 +84,13 @@ public class Directorio
     public int getSectorLibreProximo()
     {
         
-        System.out.println("sectores ocupados" + this.sectoresOcupados.size());
         for(int auxiliar=0; auxiliar<this.sectoresOcupados.size(); auxiliar++)
         {
             if(this.sectoresOcupados.get(auxiliar)==1)
             {}
             else
             {
-                System.out.println("Esto llega aquí");
+               
                 if(this.sectoresOcupados.get(auxiliar)==0)
                 {
                     this.sectoresOcupados.set(auxiliar,1);

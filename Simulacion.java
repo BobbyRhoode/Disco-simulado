@@ -97,6 +97,8 @@ public class Simulacion
                     menuInicial();
             
             case 10: menuInicial();
+            
+            case 11:
         }
     }
 
@@ -135,8 +137,8 @@ public class Simulacion
         
     
     
-        this.directorio.setLargoDirectorio(largoDisco);
-        this.directorio.rellenadoArrayList();
+       
+        this.directorio.rellenadoArrayList(largoDisco);
         System.out.println("Tamaño de sectores: " + this.directorio.largoSectoresOcupados());
         menunormal();
         
@@ -170,7 +172,7 @@ public class Simulacion
         
         else
         {
-            System.out.println("sectores disponibles: " + sectoresDisp.size());
+            System.out.println("posicion de disco disponibles: " + sectoresDisp.size());
             for(int variableAux=0; variableAux<sectoresDisp.size(); variableAux++)
             {    
                 String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -194,23 +196,13 @@ public class Simulacion
         ArrayList<Integer> bloquesDisponibles= new ArrayList<>();
         System.out.println("jolaperra");
         System.out.println("For peligroso");
-        for(int variable=0; variable<discoNuevo.get(0).getDirectorio().getLargoDirectorio(); variable++)
+        for(int variable=0; variable<numeroDeSectores; variable++)
         {
-            //System.out.println(discoNuevo.get(1).getDirectorio().getSectoresOcupados(variable);
-            //System.out.println("tamaño" + discoNuevo.size());
-            bloque=  discoNuevo.get(0).getDirectorio().getSectorLibreProximo();
-                    System.out.println("}jolaperra");
+           
+            bloque= this.directorio.getSectorLibreProximo();
             bloquesDisponibles.add(bloque);
-      //      for (Integer bloquesDisponible : bloquesDisponibles) 
-      //      {
-      //         if(bloque!=bloquesDisponible)
-      //         {
-      //         }
-                    
-      //      }
             
         }
-        System.out.println("bloques disponibles: " + bloquesDisponibles.size());
         
         if(bloquesDisponibles.size()==numeroDeSectores)
         {
