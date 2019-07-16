@@ -11,12 +11,14 @@ public class Directorio
 {
     private ArrayList<String> nombresArchivos;
     private ArrayList<Integer> sectoresOcupados;
+    private ArrayList<Integer> largoArchivo;
     private int largoDirectorio;
 
     public Directorio() 
     {
         this.nombresArchivos= new ArrayList<>();
         this.sectoresOcupados= new ArrayList<>();
+        this.largoArchivo= new ArrayList<>();
         //this.largoDirectorio= 0;
     }
     
@@ -25,16 +27,18 @@ public class Directorio
         this.largoDirectorio= largoDir;
         for(int i=0; i<largoDirectorio-1; i++)
         {
-            if(i==0 || i==1)
+            if(i==0)
             {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(1);
+                this.largoArchivo.add(0);
             }
             
             else
             {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(0);
+                this.largoArchivo.add(0);
             
             }
         }
@@ -49,6 +53,7 @@ public class Directorio
             {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(0);
+                this.largoArchivo.add(0);   
             }
             
             else
@@ -70,6 +75,11 @@ public class Directorio
     {
         this.nombresArchivos.set(v, nombre);
     }
+    
+    public int tamanoNombresArchivos()
+    {
+        return this.nombresArchivos.size();
+    }
 
     public int getSectoresOcupados(int v) 
     {
@@ -86,14 +96,13 @@ public class Directorio
         
         for(int auxiliar=0; auxiliar<this.sectoresOcupados.size(); auxiliar++)
         {
-            if(this.sectoresOcupados.get(auxiliar)==1)
+            if(this.sectoresOcupados.get(auxiliar)!=0)
             {}
             else
-            {
-               
-                if(this.sectoresOcupados.get(auxiliar)==0)
+            {  
+                if(this.sectoresOcupados.get(auxiliar)==0 && auxiliar>0)
                 {
-                    this.sectoresOcupados.set(auxiliar,1);
+                    this.sectoresOcupados.set(auxiliar, this.sectoresOcupados.get(auxiliar-1));
                     return auxiliar;
                 }
             }
@@ -115,6 +124,16 @@ public class Directorio
     public void setLargoDirectorio(int largoDirectorio) 
     {
         this.largoDirectorio = largoDirectorio;
+    }
+
+    public int getLargoArchivo(int i)
+    {
+        return largoArchivo.get(i);
+    }
+
+    public void setLargoArchivo(int i, int valor) 
+    {
+        this.largoArchivo.set(i, valor);
     }
     
     
