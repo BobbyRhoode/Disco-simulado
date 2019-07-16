@@ -16,7 +16,7 @@ public class Simulacion
 
     
     Scanner escaner;
-    int opcion=0;
+    int opcion;
 
     
     //constructor
@@ -28,8 +28,7 @@ public class Simulacion
     
     
     //Menú de inicio
-    public void menuInicial() throws InterruptedException
-    {
+    public void menuInicial() throws InterruptedException {
         
         System.out.println("Que desea hacer?");
         System.out.println("1.- Iniciar simulación");
@@ -37,20 +36,19 @@ public class Simulacion
         System.out.println(">>> ");
         opcion= escaner.nextInt();
         
-        switch(opcion)
-        {
+        while (opcion < 1 && opcion > 2) {
+            System.out.println("Numero erroneo, ingreselo nuevamente\n>>> ");
+            opcion = escaner.nextInt();
+        }
+        
+        switch(opcion) {
             case 1: menunormal();
-            
-            
             case 2: break;
         }
     }
 
     //menú donde se hacen las llamadas de sistema
-    private void menunormal() throws InterruptedException 
-    {
-        
-        opcion=0;
+    private void menunormal() throws InterruptedException {
         
         System.out.println("1.- Format");
         System.out.println("2.- Create");
@@ -60,61 +58,59 @@ public class Simulacion
         System.out.println("6.- WriteAt");
         System.out.println("7.- PrintFile");
         System.out.println("8.- List");
-        System.out.println("9.- Más Información");
-        System.out.println("10.- Volver");
+        System.out.println("9.- Help");
+        System.out.println("0.- Volver");
         System.out.println(">>>");
         opcion= escaner.nextInt();
         
-        switch(opcion)
-        {
+        while (opcion < 0 && opcion > 9) {
+            System.out.println("Numero erroneo, ingreselo nuevamente\n>>> ");
+            opcion = escaner.nextInt();
+        }
+        
+        switch(opcion) {
             case 1: creacionDisco();
                     break;
                     
             case 2: crearArchivo();
                     break;
-                    //System.out.println("Aún no está implementado");
                     //menuInicial();
             
             case 3: System.out.println("Aún no está implementado");
-                    menuInicial();
+                    break;
             
             case 4: System.out.println("Aún no está implementado");
-                    menuInicial();
+                    break;
                     
             case 5: System.out.println("Aún no está implementado");
-                    menuInicial();
+                    break;
             
             case 6: System.out.println("Aún no está implementado");
-                    menuInicial();        
+                    break;        
                     
             case 7: System.out.println("Aún no está implementado");
-                    menuInicial();        
+                    break;        
                     
             case 8: System.out.println("Aún no está implementado");
-                    menuInicial();        
+                    break;        
                     
             case 9: System.out.println("Aún no está implementado");
-                    menuInicial();
+                    break;
             
             case 10: menuInicial();
-            
-            case 11:
         }
     }
 
     
     //inicialización del disco
-    private void creacionDisco() throws InterruptedException 
-    {
+    private void creacionDisco() throws InterruptedException {
              
-        if(discoNuevo.isEmpty())
-        {
+        if(discoNuevo.isEmpty()) {
             System.out.println("No hay disco existente para fomatear");
             System.out.println(" ");    
         }
         
-        if(discoNuevo.size()==1)
-        {
+        if(discoNuevo.size()==1) {
             System.out.println("Formateando disco");
             directorio.borrandoArray();
             discoNuevo.remove(0);
@@ -124,13 +120,17 @@ public class Simulacion
         System.out.println("Indique el numero de sectores que tendrá el disco: ");
         int largoDisco= escaner.nextInt();
         
+        while (largoDisco < 0 && largoDisco > 128) {
+            System.out.println("Numero erroneo, ingreselo nuevamente\n>>> ");
+            largoDisco = escaner.nextInt();
+        }
+        
         this.discoNuevo.add(new Disco(largoDisco));
         this.discoNuevo.get(0).montarDisco();
         
         
         this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, 0));
-        for(int auxSectores=1; auxSectores<largoDisco; auxSectores++)
-        {
+        for(int auxSectores=1; auxSectores<largoDisco; auxSectores++) {
             this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, auxSectores));
             
         }
@@ -146,43 +146,44 @@ public class Simulacion
     
     //evidentemente se está creando un nuevo archivo, con un nombre no mayor a los 8 dígitos y señalandos el tamaño de éste
     //para saber en cuantos sectores de 512 bytes se debe dividir
-    private void crearArchivo() throws InterruptedException 
-    {
+    private void crearArchivo() throws InterruptedException {
         
         System.out.println("El nombre del archivo no puede tener más de ocho carácteres");
         
         System.out.println("ingrese el nombre del archivo: ");
         String nombre= escaner.nextLine();
         
-        while(nombre.equals("") || nombre.length()>8)
-        {
-            System.out.println("ingrese el nombre del archivo: ");
+        while(nombre.equals("") || nombre.length()>8) {
+            System.out.println("El nombre posee mas de caracteres de los permitidos o no coloco nombre, porfavor hagalo nuevamente: ");
             nombre= escaner.nextLine();
         }
         
         System.out.println("ingrese el tamaño del archivo: ");
         int largoArchivo= escaner.nextInt();
+        
+        while (largoArchivo < 0 && largoArchivo > 512) {
+            System.out.println("Numero erroneo, ingreselo nuevamente\n>>> ");
+            largoArchivo = escaner.nextInt();
+        }
+        
         int numeroDeSectores= (int)(largoArchivo/512)+1;
         
         ArrayList<Integer> sectoresDisp= buscarSectoresDisponibles(numeroDeSectores);
-        if(sectoresDisp==null)
-        {
+        if(sectoresDisp==null) {
             System.out.println("No hay espacio disponible para agregar nuevos archivos");
         }
         
-        else
-        {
+        else {
             System.out.println("posicion de disco disponibles: " + sectoresDisp.size());
-            for(int variableAux=0; variableAux<sectoresDisp.size(); variableAux++)
-            {    
-                String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+            for(int variableAux=0; variableAux<sectoresDisp.size(); variableAux++) {    
+                String archivoNuevo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 + "XXXXXXXXXXXX";
-                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
-                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
+                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(archivoNuevo);
+                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(archivoNuevo.getBytes());
             }
         }
         
@@ -190,22 +191,19 @@ public class Simulacion
     }
     
     //busca espacios libres en el directorio, por simplicidad se está haciendo con asignación contigua
-    private ArrayList buscarSectoresDisponibles(int numeroDeSectores) 
-    { 
+    private ArrayList buscarSectoresDisponibles(int numeroDeSectores) { 
         int bloque=-1;
+        
         ArrayList<Integer> bloquesDisponibles= new ArrayList<>();
-        System.out.println("jolaperra");
-        System.out.println("For peligroso");
-        for(int variable=0; variable<numeroDeSectores; variable++)
-        {
+        
+        for(int variable=0; variable<numeroDeSectores; variable++) {
            
             bloque= this.directorio.getSectorLibreProximo();
             bloquesDisponibles.add(bloque);
             
         }
         
-        if(bloquesDisponibles.size()==numeroDeSectores)
-        {
+        if(bloquesDisponibles.size()==numeroDeSectores) {
             return bloquesDisponibles;
         }
         
