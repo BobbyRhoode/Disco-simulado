@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,15 +18,23 @@ import java.util.logging.Logger;
 public class Disco 
 {
     private File archivoDeDisco;
-    private int NroTotalSectores;
+    private int nroTotalSectores;
+    private Volumen volumen;
+    private Directorio directorio;
+   // private Bitmap bitmap;
     
-    public Disco(int NroTotalSectores)
+    public Disco(int nroTotalSectores)
     {
-        this.NroTotalSectores = NroTotalSectores;
+        this.nroTotalSectores = nroTotalSectores;
         this.archivoDeDisco = new File("DISCO");
+        this.volumen= new Volumen(nroTotalSectores);
+        this.directorio= new Directorio();
+        
+     //   this.bitmap= new Bitmap(nroTotalSectores);
     }
     
-    public void montarDisco(int n)
+    public void montarDisco(//int n// 
+    )
     {
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -34,11 +43,11 @@ public class Disco
             fichero = new FileWriter(this.archivoDeDisco);
             pw = new PrintWriter(fichero);
             
-            for(int i=0; i<this.NroTotalSectores; i++)
+            for(int i=0; i<this.nroTotalSectores; i++)
             {
                 //pw.println(new String((new Sector()).getContenido()));               
                 
-                pw.println(new Sector(512, n));
+                pw.println(new Sector(512, i));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,17 +63,17 @@ public class Disco
     
     public Sector leerSector(int numSector)
     {		
-        if(this.NroTotalSectores >= numSector && numSector >= 0) //condición que valida que el número ingresado a esta función esté en
+        if(this.nroTotalSectores >= numSector && numSector >= 0) //condición que valida que el número ingresado a esta función esté en
         {                                                   //en el rango definido incialmente
-            
+            Sector sector=this.volumen.obtenerSector(numSector);
             Scanner lector;
             try 
             {
                 lector = new Scanner(this.archivoDeDisco);
                                         
-                for (int i=0; i<NroTotalSectores && lector.hasNextLine(); i++) 
+                for (int i=0; i<nroTotalSectores && lector.hasNextLine(); i++) 
                 {
-                    Sector sector = new Sector(512, i);
+                    
                     String linea = lector.nextLine();
                     if(i == numSector)
                     {
@@ -98,16 +107,30 @@ public class Disco
             
             fichero.writeBytes(s);
 
-        } catch (IOException ex) {
+        } catch (IOException ex) 
+        {
             Logger.getLogger(Disco.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
    
-    
     public int getNumSectores() {
-        return this.NroTotalSectores;
+        return this.nroTotalSectores;
     }
     
+    public Volumen getVolumen()
+    {
+        return this.volumen;
+    }
     
+    public Directorio getDirectorio()
+    {
+        return this.directorio;
+    }
     
+ //   public Bitmap getBitmap()
+   // {
+   //     return this.bitmap;
+   // }
+
+
 }

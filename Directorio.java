@@ -1,33 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package disco;
 
-/**
- *
+import java.io.File;
+import java.util.ArrayList;
+
+/*
  * @author Joaquin
  */
-class Directorio {
+
+public class Directorio 
+{
     private ArrayList<String> nombresArchivos;
     private ArrayList<Integer> sectoresOcupados;
     private int largoDirectorio;
 
-    public Directorio() {
+    public Directorio() 
+    {
         this.nombresArchivos= new ArrayList<>();
         this.sectoresOcupados= new ArrayList<>();
         this.largoDirectorio= 0;
     }
     
-    public void rellenadoArrayList() {
-        for(int i=0; i<largoDirectorio-1; i++) {
-            if(i==0) {
+    public void rellenadoArrayList()
+    {
+        for(int i=0; i<largoDirectorio-1; i++)
+        {
+            if(i==0 || i==1)
+            {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(1);
             }
             
-            else {
+            else
+            {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(0);
             
@@ -35,14 +39,18 @@ class Directorio {
         }
     }
     
-    public void borrandoArray() {
-        for(int i=0; i<largoDirectorio-1; i++) {
-            if(i==0) {
+    public void borrandoArray()
+    {
+        for(int i=0; i<largoDirectorio-1; i++)
+        {
+            if(i==0)
+            {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(0);
             }
             
-            else {
+            else
+            {
                 this.nombresArchivos.add("");
                 this.sectoresOcupados.add(0);
             
@@ -51,27 +59,63 @@ class Directorio {
     }
     
     
-    public String getNombresArchivos(int v) {
+    public String getNombresArchivos(int v) 
+    {
         return this.nombresArchivos.get(v);
     }
 
-    public void setNombresArchivos(int v, String nombre) {
+    public void setNombresArchivos(int v, String nombre) 
+    {
         this.nombresArchivos.set(v, nombre);
     }
 
-    public int getSectoresOcupados(int v) {
+    public int getSectoresOcupados(int v) 
+    {
         return this.sectoresOcupados.get(v);
     }
+    
+    public int largoSectoresOcupados()
+    {
+        return this.sectoresOcupados.size();
+    }
+    
+    public int getSectorLibreProximo()
+    {
+        
+        System.out.println("sectores ocupados" + this.sectoresOcupados.size());
+        for(int auxiliar=0; auxiliar<this.sectoresOcupados.size(); auxiliar++)
+        {
+            if(this.sectoresOcupados.get(auxiliar)==1)
+            {}
+            else
+            {
+                System.out.println("Esto llega aquí");
+                if(this.sectoresOcupados.get(auxiliar)==0)
+                {
+                    this.sectoresOcupados.set(auxiliar,1);
+                    return auxiliar;
+                }
+            }
+        }
+        
+        return -1;
+    }
 
-    public void setSectoresOcupados(int v, int cambioEstado) {
+    public void setSectoresOcupados(int v, int cambioEstado) 
+    {
         this.sectoresOcupados.set(v, cambioEstado);
     }
 
-    public int getLargoDirectorio() {
+    public int getLargoDirectorio() 
+    {
         return this.largoDirectorio;
     }
 
-    public void setLargoDirectorio(int largoDirectorio) {
+    public void setLargoDirectorio(int largoDirectorio) 
+    {
         this.largoDirectorio = largoDirectorio;
     }
+    
+    
+    
 }

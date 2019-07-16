@@ -13,6 +13,7 @@ public class Volumen
     public Volumen(int valor) 
     {
         this.sectores= new ArrayList<>(valor);
+        this.sectores.add(new Sector(512, 0));
     }
     
     public void agregarSector(Sector sector)
@@ -34,6 +35,5 @@ public class Volumen
     {
         this.sectores.remove(i);
     }
-    
     
 }
