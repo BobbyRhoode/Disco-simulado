@@ -16,6 +16,7 @@ public class Simulacion
 
     public static void main(String[] args) {
         Simulacion simula = new Simulacion();
+        simula.MenuInicial();
     }
     
     public Simulacion() {
@@ -49,7 +50,12 @@ public class Simulacion
     }
     
     public void script() {
-        
+        System.out.println("Formateando Disco... Porfavor espere");
+        creacionDisco();
+        System.our.println("\nCreando archivo");
+        System.our.println("\nEliminando archivo");
+        System.our.println("\nAbriendo archivo");
+        System.our.println("\nLeyendo en el archivo");
     }
 
     private void menunormal() {
@@ -81,26 +87,38 @@ public class Simulacion
         }
     }
 
-    private void creacionDisco() 
-    {
+    private void creacionDisco() {
         
         if(discoNuevo.size()==0) {
             System.out.println("No hay disco existente para fomatear");
             System.out.println(" ");
-            
         }
         
         if(discoNuevo.size()==1) {
             System.out.println("Formateando disco");
+            directorio.borrandoArray();
+            discoNuevo.remove(0);
         }
         
         System.out.println("Indique el numero de sectores que tendrá el disco: ");
-        int sectores = escaner.nextInt();
+        int largoDisco= Integer.parseInt(escaner.next());
         
+        while (largoDisco < 0 && largoDisco > 128) {
+            System.out.println("Dato erroneo, ingrese nuevamente: ");
+            largoDisco= Integer.parseInt(escaner.next());
+        }
         
+        discoNuevo.add(new Disco(largoDisco));
+        discoNuevo.get(0).montarDisco();
+        directorio.setLargoDirectorio(largoDisco);
+        directorio.rellenadoArrayList();
         
+        menunormal();
+    }
+    
+    private void creacionArchivo() {
         
-        
+        System.out.println(
     }
     
 }
