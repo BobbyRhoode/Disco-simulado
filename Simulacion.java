@@ -338,11 +338,12 @@ public class Simulacion
                 
         }
        
+        //comienza la busqueda de el archivo que se quiere eliminar en el sector 0
         for(int entero=0; entero<directorio.tamanoNombresArchivos(); entero++)
         {
             if(directorio.getNombresArchivos(entero).equals(receptorPalabra))
             {
-                enteroAuxiliar++;
+                enteroAuxiliar++; //contador aumenta para indicar que se encontró el archivo en el sector y poder seguir con la simulación
                 directorio.setNombresArchivos(entero," ");
                 directorio.setSectoresOcupados(entero, 0);
                 this.discoNuevo.get(0).getVolumen().setEstaDesocupado(entero);
@@ -352,7 +353,7 @@ public class Simulacion
             }
         
         }
-        if(enteroAuxiliar==-1)
+        if(enteroAuxiliar==-1) //sí el entero no aumentó quiere decir que no se encontró el archivo buscado para hacerle un DELETE!
         {
             System.out.println("DANGER! DANGER! la eliminicación del archivo " + receptorPalabra + " no fue encontrado por ningún lado");
             try {
@@ -367,9 +368,46 @@ public class Simulacion
            
     }
     
-    private void abrirArchivo() 
+    private void abrirArchivo() throws InterruptedException 
     {
+        String opcionNueva= " ";
+        int algo=-1;
+        while(opcionNueva.equals(" "))
+        {
+            System.out.println("Ingrese el nombre del archivo por abrir: ");
+            opcionNueva= this.es.nextLine();
+        }
         
+        
+        //for para cerrar cualquier archivo abierto previamente
+        for(int i=0; i<this.directorio.tamanoNombresArchivos(); i++)
+        {
+            if(this.discoNuevo.get(0).getVolumen().getEstaAbierto(i)==true)
+            {}
+            else
+            {
+                this.discoNuevo.get(0).getVolumen().setEstaAbierto(i);
+            }
+        }
+        
+        //for para abrir el archivo nuevo
+        for(int k=0; k<this.directorio.tamanoNombresArchivos(); k++)
+        {
+            if(this.directorio.getNombresArchivos(k).equals(opcionNueva))
+            {
+                this.discoNuevo.get(0).getVolumen().getEstaAbierto(k);
+                algo++;
+            }
+        }
+        
+        if(algo==-1)
+        {
+            System.out.println(opcionNueva + " no fue encontrado");
+            abrirArchivo();
+        }
+        
+        else
+            menunormal();
     }
     
     private void printearArchivo() 
