@@ -65,7 +65,6 @@ public class Directorio
         }
     }
     
-    
     public String getNombresArchivos(int v) 
     {
         return this.nombresArchivos.get(v);
