@@ -94,14 +94,14 @@ public class Simulacion
             case 6: System.out.println("Aún no está implementado");
                     menuInicial();        
                     
-            case 7: System.out.println("Aún no está implementado");
+            case 7: printearArchivo();
                     menuInicial();        
                     
             case 8: listarDirectorio();
                     //System.out.println("Aún no está implementado");
                     menunormal();        
                     
-            case 9: printearArchivo();
+            case 9: mostrarExplicacionFunciones();
                     break;
             
             case 10: menuInicial();
@@ -374,7 +374,35 @@ public class Simulacion
     
     private void printearArchivo() 
     {
-    
+        String nombrePorBuscar= " ";
+        int variable= -1;
+        int descontarFCB=0;
+        while(nombrePorBuscar.equals(" "))
+        {
+            System.out.println("Ingrese el nombre del archivo a imprimir: ");
+            nombrePorBuscar= this.es.nextLine();
+        }
+        
+        for(int i=0; i<directorio.tamanoNombresArchivos(); i++)
+        {
+            if(this.directorio.getNombresArchivos(i).equals(nombrePorBuscar))
+            {
+                variable++;
+                if(descontarFCB==0)
+                {}
+                else
+                {
+                    System.out.println(this.discoNuevo.get(0).getVolumen().obtenerSector(i).getPalabra());
+                }
+                descontarFCB++;
+            }
+        }
+        if(variable==-1)
+        {
+            
+            System.out.println("DANGER! DANGER! HAY ALGO MALO AL IMPRIMIR!");
+        }
+            
     }
     
     //Main
