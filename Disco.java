@@ -80,8 +80,7 @@ public class Disco
                         sector.setContenido(linea.getBytes());
                         lector.close();
                         return sector;
-                    }                                             
-                                                         
+                    }                                    
                 }                        
                 lector.close();
             } 

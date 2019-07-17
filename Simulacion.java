@@ -85,8 +85,8 @@ public class Simulacion
                     //System.out.println("Aún no está implementado");
                     //menuInicial();
             
-            case 4: System.out.println("Aún no está implementado");
-                    menuInicial();
+            case 4: abrirArchivo();
+                    break;
                     
             case 5: System.out.println("Aún no está implementado");
                     menuInicial();
@@ -101,8 +101,8 @@ public class Simulacion
                     //System.out.println("Aún no está implementado");
                     menunormal();        
                     
-            case 9: mostrarExplicacionFunciones();
-                    menunormal();
+            case 9: printearArchivo();
+                    break;
             
             case 10: menuInicial();
             
@@ -167,7 +167,7 @@ public class Simulacion
         
         System.out.println("ingrese el tamaño del archivo: ");
         int largoArchivo= escaner.nextInt();
-        int numeroDeSectores= (int)(largoArchivo/512)+1;
+        int numeroDeSectores= (int)(largoArchivo/512)+2;
         
         ArrayList<Integer> sectoresDisp= buscarSectoresDisponibles(numeroDeSectores);
         if(sectoresDisp==null)
@@ -180,36 +180,63 @@ public class Simulacion
         {
             System.out.println("posicion de disco disponibles: " + sectoresDisp.size());
             for(int variableAux=0; variableAux<sectoresDisp.size(); variableAux++)
-            {    
-                directorio.setNombresArchivos(sectoresDisp.get(variableAux), nombre);
-                if(largoArchivo>512)
+            {
+                //Parche De FCB
+                if(variableAux==0)
                 {
+                    directorio.setNombresArchivos(sectoresDisp.get(variableAux), nombre);
                     directorio.setLargoArchivo(sectoresDisp.get(variableAux), 512);
-                    largoArchivo-=512;
+                    String algo =  nombre + "\"-\"" + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXX";
+                    
+                    for(int i=1; i<sectoresDisp.size(); i++)
+                    {
+                        this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).agregarSectoresSiguientes(i);
+                    }
+                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
+                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
+                    
+                
+                    this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
+                    
                 }
                 
-                else if (largoArchivo<=512)
+                //fin de Parche FCB
+                else
                 {
-                    directorio.setLargoArchivo(sectoresDisp.get(variableAux), largoArchivo);
+                    directorio.setNombresArchivos(sectoresDisp.get(variableAux), nombre);
+                    if(largoArchivo>512)
+                    {
+                        directorio.setLargoArchivo(sectoresDisp.get(variableAux), 512);
+                        largoArchivo-=512;
+                    }
+                
+                    else if (largoArchivo<=512)
+                    {
+                        directorio.setLargoArchivo(sectoresDisp.get(variableAux), largoArchivo);
+                    }
+                
+                    else if(largoArchivo<=0)
+                    {
+                        System.out.println("DANGER! DANGER! problema con la división de memoria en el directorio");
+                    }
+                
+                    String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    + "XXXXXXXXXXXX";
+                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
+                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
+                
+                    this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
+                    }
                 }
-                
-                else if(largoArchivo<=0)
-                {
-                    System.out.println("DANGER! DANGER! problema con la división de memoria en el directorio");
-                }
-                
-                String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                + "XXXXXXXXXXXX";
-                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
-                this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
-                
-                this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
-                
-            }
         }
         
         menunormal();
@@ -337,11 +364,18 @@ public class Simulacion
             System.out.println("Intente otra vez");
             eliminarArchivo();
         }
-        
-        
+           
+    }
+    
+    private void abrirArchivo() 
+    {
         
     }
     
+    private void printearArchivo() 
+    {
+    
+    }
     
     //Main
     public static void main(String[] args) throws InterruptedException 
@@ -350,6 +384,5 @@ public class Simulacion
         simulacion.menuInicial();
         
     }
-
     
 }
