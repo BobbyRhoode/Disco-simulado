@@ -10,7 +10,9 @@ import java.util.Scanner;
  */
 
 public class Archivo {
-    public Archivo() {}
+    public Archivo() {
+        Simulacion simula = new Simulacion();
+    }
     
     //inicialización del disco
     private void creacionDisco() throws InterruptedException 
@@ -47,7 +49,7 @@ public class Archivo {
        
         this.directorio.rellenadoArrayList(largoDisco);
         System.out.println("Tamaño de sectores: " + this.directorio.largoSectoresOcupados());
-        menunormal();
+        simula.menunormal();
         
     }
     
@@ -112,7 +114,7 @@ public class Archivo {
             }
         }
         
-        menuInicial();
+        simula.menuInicial();
     }
     
     //busca espacios libres en el directorio, por simplicidad se está haciendo con asignación contigua
@@ -158,7 +160,7 @@ public class Archivo {
         }
         
         if(escape==0)
-            menunormal();
+            simula.menunormal();
         else
             mostrarExplicacionFunciones();
     }
@@ -183,7 +185,7 @@ public class Archivo {
         }
         
         if(opcionActual==0)
-            menunormal();
+            simula.menunormal();
         else
         {
             System.out.println("DANGER! DANGER! No se puede regresar atrás");
