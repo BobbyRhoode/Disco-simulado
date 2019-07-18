@@ -12,6 +12,7 @@ public class Sector
     private int identificador;
     private byte[] contenido;
     private String palabra;
+    private String palabraDevuelta;
     private int tamano;
     private ArrayList<Integer> ubicacionesPosteriores;
     
@@ -28,6 +29,7 @@ public class Sector
         this.tamano= tamano;
         this.identificador= identificador;
         this.ubicacionesPosteriores= new ArrayList<>();
+    
     }
     
     public void agregarSectoresSiguientes(int i)
@@ -74,4 +76,11 @@ public class Sector
     {
         this.contenido = contenido;
     }
+    public String transformacionByteAString()
+    {
+      
+        this.palabraDevuelta= new String(contenido);
+        return palabraDevuelta;
+    }
+    
 }

@@ -65,8 +65,7 @@ public class Simulacion
         System.out.println("7.- PrintFile");
         System.out.println("8.- List");
         System.out.println("9.- Más Información");
-        System.out.println("10.- Volver");
-       // System.out.println("11- número de sectores");
+        System.out.println("0.- Volver");
         System.out.println(">>>");
         opcion= escaner.nextInt();
         
@@ -77,37 +76,30 @@ public class Simulacion
                     
             case 2: crearArchivo();
                     break;
-                    //System.out.println("Aún no está implementado");
-                    //menuInicial();
             
             case 3: eliminarArchivo();
                     break;
-                    //System.out.println("Aún no está implementado");
-                    //menuInicial();
             
             case 4: abrirArchivo();
                     break;
                     
             case 5: System.out.println("Aún no está implementado");
-                    menuInicial();
+                    break;
             
-            case 6: System.out.println("Aún no está implementado");
-                    menuInicial();        
+            case 6: writeAt();
+                    break;        
                     
             case 7: printearArchivo();
-                    menuInicial();        
+                    break;        
                     
             case 8: listarDirectorio();
-                    //System.out.println("Aún no está implementado");
-                    menunormal();        
+                    break;        
                     
             case 9: mostrarExplicacionFunciones();
                     break;
             
-            case 10: menuInicial();
+            case 0: menuInicial();
             
-            //case 11: System.out.println(this.discoNuevo.get(0).getVolumen().tamanoSector());
-              //       menunormal();
         }
     }
 
@@ -133,15 +125,21 @@ public class Simulacion
         System.out.println("Indique el numero de sectores que tendrá el disco: ");
         int largoDisco= escaner.nextInt();
         
+        while (largoDisco < 0 || largoDisco>128) 
+        {
+            System.out.println("Indique el numero de sectores que tendrá el disco: ");
+            largoDisco= escaner.nextInt();
+        }
+        
         this.discoNuevo.add(new Disco(largoDisco));
         this.discoNuevo.get(0).montarDisco();
         
         
-        this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, 0));
-        for(int auxSectores=1; auxSectores<largoDisco; auxSectores++)
-        {
-            this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, auxSectores));   
-        }
+        //this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, 0));
+        //for(int auxSectores=1; auxSectores<largoDisco; auxSectores++)
+        //{
+        //    this.discoNuevo.get(0).getVolumen().agregarSector(new Sector(512, auxSectores));   
+        //}
        
         this.directorio.rellenadoArrayList(largoDisco);
         System.out.println("Tamaño de sectores: " + this.directorio.largoSectoresOcupados());
@@ -213,11 +211,30 @@ public class Simulacion
                     {
                         directorio.setLargoArchivo(sectoresDisp.get(variableAux), 512);
                         largoArchivo-=512;
+                        String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        + "XXXXXXXXXXXX";
+                        this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
+                        this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
+                
+                        this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
                     }
                 
                     else if (largoArchivo<=512)
                     {
                         directorio.setLargoArchivo(sectoresDisp.get(variableAux), largoArchivo);
+                        String algo="";
+                        for(int variable=0; variable<largoArchivo; variable++)
+                        {
+                            algo= algo + "X";
+                        }
+                        this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
+                        this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
+                
+                    this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
                     }
                 
                     else if(largoArchivo<=0)
@@ -225,16 +242,7 @@ public class Simulacion
                         System.out.println("DANGER! DANGER! problema con la división de memoria en el directorio");
                     }
                 
-                    String algo =  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                    + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                    + "XXXXXXXXXXXX";
-                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setPalabra(algo);
-                    this.discoNuevo.get(0).getVolumen().obtenerSector(sectoresDisp.get(variableAux)).setContenido(algo.getBytes());
-                
-                    this.discoNuevo.get(0).getVolumen().setEstaDesocupado(sectoresDisp.get(variableAux));
+                    
                     }
                 }
         }
@@ -247,8 +255,6 @@ public class Simulacion
     { 
         int bloque=-1;
         ArrayList<Integer> bloquesDisponibles= new ArrayList<>();
-        System.out.println("jolaperra");
-        System.out.println("For peligroso");
         for(int variable=0; variable<numeroDeSectores; variable++)
         {
            
@@ -278,17 +284,9 @@ public class Simulacion
         System.out.println("6.- WriteAt: Para escribir un archivo previamente abierto en una determinada posición.");
         System.out.println("7.- PrintFile: Para mostrar en la pantalla el contenido de un archivo.");
         System.out.println("8.- List: Para mostrar en pantalla las entradas del directorio, incluyendo el tamaño en bytes de\n" +
-"cada archivo.");
-        int escape=-1;
-        while(escape!=0)
-        {
-            System.out.println("Ingrese 0 para regresar atrás");
-        }
+"cada archivo.\n");
+        menunormal();
         
-        if(escape==0)
-            menunormal();
-        else
-            mostrarExplicacionFunciones();
     }
     
     
@@ -372,8 +370,7 @@ public class Simulacion
     {
         String opcionNueva= " ";
         int algo=-1;
-        while(opcionNueva.equals(" "))
-        {
+        while(opcionNueva.equals(" ")) {
             System.out.println("Ingrese el nombre del archivo por abrir: ");
             opcionNueva= this.es.nextLine();
         }
@@ -382,7 +379,7 @@ public class Simulacion
         //for para cerrar cualquier archivo abierto previamente
         for(int i=0; i<this.directorio.tamanoNombresArchivos(); i++)
         {
-            if(this.discoNuevo.get(0).getVolumen().getEstaAbierto(i)==true)
+            if(this.discoNuevo.get(0).getVolumen().getEstaAbierto(i)==false)
             {}
             else
             {
@@ -393,9 +390,9 @@ public class Simulacion
         //for para abrir el archivo nuevo
         for(int k=0; k<this.directorio.tamanoNombresArchivos(); k++)
         {
-            if(this.directorio.getNombresArchivos(k).equals(opcionNueva))
+            if(this.directorio.getNombresArchivos(k).equals(opcionNueva) && this.discoNuevo.get(0).getVolumen().getEstaAbierto(k)==false)
             {
-                this.discoNuevo.get(0).getVolumen().getEstaAbierto(k);
+                this.discoNuevo.get(0).getVolumen().setEstaAbierto(k);
                 algo++;
             }
         }
@@ -410,7 +407,7 @@ public class Simulacion
             menunormal();
     }
     
-    private void printearArchivo() 
+    private void printearArchivo() throws InterruptedException 
     {
         String nombrePorBuscar= " ";
         int variable= -1;
@@ -430,7 +427,7 @@ public class Simulacion
                 {}
                 else
                 {
-                    System.out.println(this.discoNuevo.get(0).getVolumen().obtenerSector(i).getPalabra());
+                    System.out.println(this.discoNuevo.get(0).getVolumen().obtenerSector(i).transformacionByteAString());
                 }
                 descontarFCB++;
             }
@@ -440,7 +437,96 @@ public class Simulacion
             
             System.out.println("DANGER! DANGER! HAY ALGO MALO AL IMPRIMIR!");
         }
+         
+        menunormal();
+    }
+    
+    private void writeAt() throws InterruptedException 
+    {
+        
+        ArrayList<Integer> posiciones = new ArrayList<Integer>();
+        
+        System.out.println(discoNuevo.get(0).getVolumen().tamanoSector());
+        for (int i = 0; i < discoNuevo.get(0).getVolumen().tamanoSector(); i++) 
+        {
             
+            if (discoNuevo.get(0).getVolumen().getEstaAbierto(i)==true) 
+            {
+                posiciones.add(i);
+            }
+            
+            else
+            {}
+        }
+        
+        System.out.println("Ingrese byte de inicio: ");
+        int inicio = Integer.parseInt(escaner.next());
+        while (inicio < 0) 
+        {
+            System.out.println("Dato erroneo, ingrese nuevamente: ");
+            inicio = Integer.parseInt(escaner.next());
+        }
+        
+        String algo = " ";
+        System.out.println("Ingrese lo que quiere escribir: ");
+        algo= this.es.nextLine();
+        while(algo.equals(" "))
+        {
+            
+            System.out.println("Ingrese lo que quiere escribir: ");
+            algo= this.es.nextLine();
+        }
+        
+        byte[] nuevoCoso= new byte[algo.length()];
+        nuevoCoso= algo.getBytes();
+        
+        
+        if (inicio < 512) 
+        {
+           
+            
+            for(int i=0; i<inicio; i++)
+            {
+               algo= "X" + algo;
+            }
+            while(algo.length()<this.discoNuevo.get(0).getVolumen().tamanoSector())
+            {
+                algo= algo + "X";
+            }
+          
+            
+            this.discoNuevo.get(0).getVolumen().obtenerSector(posiciones.get(1)).setPalabra(algo);
+            this.discoNuevo.get(0).getVolumen().obtenerSector(posiciones.get(1)).setContenido(algo.getBytes());
+        }
+        else 
+        {
+            int cantidadRestas=1; //Empieza en uno porque el bloque 0 corresponde al FCB y la posicion 1 se usaría si el espacio a usar es menor a 512 bytes
+            while(inicio>512)
+            {
+                inicio= inicio- 512;
+                cantidadRestas++;
+            }
+            
+            for(int i=0; i<inicio; i++)
+            {
+               algo= "X" + algo;
+            }
+            while(algo.length()<this.discoNuevo.get(0).getVolumen().tamanoSector())
+            {
+                algo= algo + "X";
+            }
+            
+            System.out.println("EL weon del texto debería haber ingresado en " +posiciones.get(1));
+            
+             this.discoNuevo.get(0).getVolumen().obtenerSector(posiciones.get(1)).setPalabra(algo);
+             this.discoNuevo.get(0).getVolumen().obtenerSector(posiciones.get(1)).setContenido(algo.getBytes());
+            
+            
+            
+        }
+        
+        menunormal();
+        
     }
     
     //Main

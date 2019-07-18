@@ -44,7 +44,7 @@ public class Volumen
     
     public boolean getEstaAbierto(int i)
     {
-        if(this.estaAbierto.get(i)==0)
+        if(this.estaAbierto.get(i)==1)
             return true;
         return false;
     }
